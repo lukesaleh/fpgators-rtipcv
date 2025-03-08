@@ -4,14 +4,17 @@ use ieee.numeric_std.all;
 
 package user_pkg is
     --Specify constants 
-    constant C_SIGNAL_WIDTH             : positive := 8;
+    constant C_SIGNAL_WIDTH             : positive := 12;
     constant C_KERNEL_DIMENSION         : positive := 3;
-    constant C_KERNEL_WIDTH             : positive := 8;
-    constant C_CONVOLUTION_WIDTH        : positive := C_SIGNAL_WIDTH*2;
+    constant C_KERNEL_WIDTH             : positive := 12;
+    constant C_ROW_MULT_WIDTH           : positive := C_SIGNAL_WIDTH*2+2;
+    constant C_CONVOLUTION_WIDTH        : positive := C_ROW_MULT_WIDTH+2;
     
+    constant C_MAX_INTENSITY            : integer := (2**C_SIGNAL_WIDTH) -1;
     --Specify custom ranges (to be used in datatypes) from constants 
     subtype SIGNAL_WIDTH_RANGE is natural range C_SIGNAL_WIDTH-1 downto 0;
     subtype KERNEL_DIMENSION_RANGE is natural range 0 to C_KERNEL_DIMENSION -1;
+    subtype ROW_MULT_RANGE is natural range C_ROW_MULT_WIDTH-1 downto 0;
     subtype CONVOLUTION_WIDTH_RANGE is natural range C_CONVOLUTION_WIDTH-1 downto 0;
 
     -- Specify custom datatypes from custom ranges

@@ -56,10 +56,9 @@ begin
                 delay_col2 <= col2_product;
 
                 --Accumulate the row sum in one final stage
-                output_r <= resize(col_0_1_sum, C_SIGNAL_WIDTH*2+2) + resize(delay_col2, C_SIGNAL_WIDTH*2+2);
+                output_r <= resize(col_0_1_sum, C_ROW_MULT_WIDTH) + resize(delay_col2, C_ROW_MULT_WIDTH);
             end if;
         end if;
     end process;
     
-
-end architecture;
+end rtl;
