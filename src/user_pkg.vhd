@@ -7,7 +7,7 @@ package USER_PACKAGE is
     constant C_SIGNAL_WIDTH             : positive := 8;
     constant C_KERNEL_DIMENSION         : positive := 3;
     constant C_KERNEL_WIDTH             : positive := 8;
-    constant C_CONVOLUTION_WIDTH        : positive := 16;
+    constant C_CONVOLUTION_WIDTH        : positive := C_SIGNAL_WIDTH*2;
     
     --Specify custom ranges (to be used in datatypes) from constants 
     subtype SIGNAL_WIDTH_RANGE is natural range C_SIGNAL_WIDTH-1 downto 0;
@@ -18,6 +18,9 @@ package USER_PACKAGE is
     type window_row is array(KERNEL_DIMENSION_RANGE) of std_logic_vector(SIGNAL_WIDTH_RANGE); --one row in matrix
     type window is array (KERNEL_DIMENSION_RANGE) of window_row; --full matrix
 
-    type kernel_row is array(KERNEL_DIMENSION_RANGE) of signed(SIGNAL_WIDTH_RANGE); --one row in matrix
-    type kernel is array (KERNEL_DIMENSION_RANGE) of kernel_row; --full matrix
+    type kernel_row is array(KERNEL_DIMENSION_RANGE) of signed(SIGNAL_WIDTH_RANGE); --one row in kernel
+    type kernel is array (KERNEL_DIMENSION_RANGE) of kernel_row; --full kernel
+
+    constant C_1 : std_logic := '1';
+    constant C_0 : std_logic := '0';
 end USER_PACKAGE;
