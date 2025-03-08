@@ -2,7 +2,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
-use user_pkg.all;
+use work.user_pkg.all;
 
 -- Entity: mult_tree
 -- Description: a pipelined multiplier and add tree. This entity works on one row of the 3x3 image window. 
@@ -16,7 +16,7 @@ entity mult_add_tree is
         en                  : in std_logic;
         pixel_input         : in window_row;
         filter_input        : in kernel_row;
-        output              : out signed(CONVOLUTION_WIDTH_RANGE)
+        output              : out signed(C_SIGNAL_WIDTH*2+1 downto 0)
     );
 end mult_add_tree; 
 
@@ -33,7 +33,7 @@ begin
     begin
         if(rst = '1') then 
             pixel_window_r <= (others => (others => '0'));
-            kernel_window_r <= (others => (others => '0'));
+            filter_window_r <= (others => (others => '0'));
             col0_product <= (others => '0');
             col1_product <= (others => '0');
             col2_product <= (others => '0');

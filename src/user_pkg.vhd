@@ -2,7 +2,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-package USER_PACKAGE is
+package user_pkg is
     --Specify constants 
     constant C_SIGNAL_WIDTH             : positive := 8;
     constant C_KERNEL_DIMENSION         : positive := 3;
@@ -23,4 +23,4 @@ package USER_PACKAGE is
 
     constant C_1 : std_logic := '1';
     constant C_0 : std_logic := '0';
-end USER_PACKAGE;
+end user_pkg;
