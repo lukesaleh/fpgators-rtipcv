@@ -18,7 +18,7 @@ entity convolution_pipeline is
         en                      : in std_logic;
         window_input            : in window;
         filter                  : in kernel;
-        output                  : out STD_LOGIC_VECTOR(SIGNAL_WIDTH_RANGE)
+        output_pixel            : out STD_LOGIC_VECTOR(SIGNAL_WIDTH_RANGE)
     );
 
 end convolution_pipeline; 
@@ -62,7 +62,7 @@ begin
     end process;
 
     --add clamping on output before being able to assign, also need to cast to std_logic_vector and resize
-    output <=
+    output_pixel <=
         --clamp to 0 case 
         (others => '0') when (output_r <= to_signed(0,C_CONVOLUTION_WIDTH)) else 
         --clamp to 255 case
