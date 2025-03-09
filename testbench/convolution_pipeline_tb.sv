@@ -60,11 +60,62 @@ module convolution_pipeline_tb;
             end
         end
         en = 1;
-        repeat(7) @(posedge clk);
+
+        @(posedge clk) //one clock delay to load in new data
+        //Case 2: test data convolved with negative kernel
+        //Make window a 3x3 matrix of 10s
+        for (i = 0; i < C_KERNEL_DIMENSION; i++) begin
+            for (j = 0; j < C_KERNEL_DIMENSION; j++) begin
+                window_input[i][j] <= 10;
+            end
+        end
+        //Kernel is a diagonal of -1s. Should clip to 0
+        for (i = 0; i < C_KERNEL_DIMENSION; i++) begin
+            for (j = 0; j < C_KERNEL_DIMENSION; j++) begin
+                if(i == j)
+                filter[i][j] = -1;
+                else
+                filter[i][j] = 0;
+            end
+        end
+
+        @(posedge clk) //one clock delay to load in new data
+        //Case 3: test data convolved with negative kernel
+        //Make window a 3x3 matrix of 10s
+        for (i = 0; i < C_KERNEL_DIMENSION; i++) begin
+            for (j = 0; j < C_KERNEL_DIMENSION; j++) begin
+                window_input[i][j] <= 12'd4095;
+            end
+        end
+        //Kernel is a diagonal of 1s. Should result in clip to max
+        for (i = 0; i < C_KERNEL_DIMENSION; i++) begin
+            for (j = 0; j < C_KERNEL_DIMENSION; j++) begin
+                if(i == j)
+                filter[i][j] = 1;
+                else
+                filter[i][j] = 0;
+            end
+        end
+
+        repeat(5) @(posedge clk);
         if(dut_out != 12'd12)
             $error("Test case 1 FAILED: Expected 12, got %0d", dut_out);
         else
             $display("Test case 1 PASSED: dut_out = %0d",dut_out);
+
+        @(posedge clk);
+        if (dut_out !== 12'd0)
+            $error("Test Case 2 FAILED: Expected 0 (clamped), got %0d", dut_out);
+        else
+            $display("Test Case 2 PASSED: dut_out = %0d", dut_out);
+        
+        @(posedge clk);
+        if (dut_out !== 12'd4095)
+            $error("Test Case 3 FAILED: Expected 4095 (clamped), got %0d", dut_out);
+        else
+            $display("Test Case 3 PASSED: dut_out = %0d", dut_out);
+
+
     end
     
     
