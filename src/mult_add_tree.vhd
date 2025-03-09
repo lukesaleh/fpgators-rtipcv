@@ -23,10 +23,10 @@ end mult_add_tree;
 architecture rtl of mult_add_tree is
     signal pixel_window_r : window_row;
     signal filter_window_r : kernel_row;
-    signal col0_product, col1_product, col2_product: signed(C_SIGNAL_WIDTH*2-1 downto 0);
-    signal col_0_1_sum : signed(C_SIGNAL_WIDTH*2 downto 0);
-    signal delay_col2 : signed(C_SIGNAL_WIDTH*2-1 downto 0);
-    signal output_r : signed(C_SIGNAL_WIDTH*2+1 downto 0);
+    signal col0_product, col1_product, col2_product: signed(C_SIGNAL_WIDTH*2 downto 0);
+    signal col_0_1_sum : signed(C_SIGNAL_WIDTH*2+1 downto 0);
+    signal delay_col2 : signed(C_SIGNAL_WIDTH*2 downto 0);
+    signal output_r : signed(C_SIGNAL_WIDTH*2+2 downto 0);
 begin
     output <= output_r;
     process(clk, rst) 

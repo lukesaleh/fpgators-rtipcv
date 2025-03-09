@@ -7,7 +7,7 @@ package user_pkg is
     constant C_SIGNAL_WIDTH             : positive := 12;
     constant C_KERNEL_DIMENSION         : positive := 3;
     constant C_KERNEL_WIDTH             : positive := 12;
-    constant C_ROW_MULT_WIDTH           : positive := C_SIGNAL_WIDTH*2+2;
+    constant C_ROW_MULT_WIDTH           : positive := C_SIGNAL_WIDTH*2+3;
     constant C_CONVOLUTION_WIDTH        : positive := C_ROW_MULT_WIDTH+2;
     
     constant C_MAX_INTENSITY            : integer := (2**C_SIGNAL_WIDTH) -1;
