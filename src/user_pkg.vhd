@@ -9,19 +9,21 @@ package user_pkg is
     constant C_KERNEL_WIDTH             : positive := 13;
     constant C_ROW_MULT_WIDTH           : positive := C_SIGNAL_WIDTH+C_KERNEL_WIDTH+3;
     constant C_CONVOLUTION_WIDTH        : positive := C_ROW_MULT_WIDTH+2;
-    
+    constant C_BATCH_SIZE               : positive := 10;
     constant C_MAX_INTENSITY            : integer := (2**C_SIGNAL_WIDTH) -1;
+
     --Specify custom ranges (to be used in datatypes) from constants 
     subtype SIGNAL_WIDTH_RANGE is natural range C_SIGNAL_WIDTH-1 downto 0;
     subtype KERNEL_WIDTH_RANGE is natural range C_KERNEL_WIDTH-1 downto 0;
     subtype KERNEL_DIMENSION_RANGE is natural range 0 to C_KERNEL_DIMENSION -1;
     subtype ROW_MULT_RANGE is natural range C_ROW_MULT_WIDTH-1 downto 0;
     subtype CONVOLUTION_WIDTH_RANGE is natural range C_CONVOLUTION_WIDTH-1 downto 0;
+    subtype BATCH_RANGE is natural range 0 to C_BATCH_SIZE-1;
 
     -- Specify custom datatypes from custom ranges
     type window_row is array(KERNEL_DIMENSION_RANGE) of std_logic_vector(SIGNAL_WIDTH_RANGE); --one row in matrix
     type window is array (KERNEL_DIMENSION_RANGE) of window_row; --full matrix
-
+    type window_batch is array(BATCH_RANGE) of window;
     type kernel_row is array(KERNEL_DIMENSION_RANGE) of signed(KERNEL_WIDTH_RANGE); --one row in kernel
     type kernel is array (KERNEL_DIMENSION_RANGE) of kernel_row; --full kernel
 
