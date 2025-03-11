@@ -102,7 +102,8 @@ module convolution_pipeline_tb;
 
     initial begin 
         @(negedge rst);
-        repeat(8) @(posedge clk); //wait 8 clocks because 1 clock cycle after reset plus 7 for pipeline
+        repeat(8) @(posedge clk); //wait 8 clocks because 2 clock cycles (negedge makes it last extra cycle) after reset 
+                                  //plus 6 for pipeline
 
         if(dut_out != 12'd12)
             $error("Test case 1 FAILED: Expected 12, got %0d", dut_out);
