@@ -2,6 +2,7 @@ module convolution_pipeline_tb;
 
     localparam int C_SIGNAL_WIDTH = 12;        // 12-bit pixels
     localparam int C_KERNEL_DIMENSION = 3;       // 3x3 kernel
+    localparam int C_KERNEL_WIDTH = 13;
 
     logic clk;
     logic rst;
@@ -10,7 +11,7 @@ module convolution_pipeline_tb;
     //Equivalent to the custom "window" type in user_pkg.vhd
     logic[C_SIGNAL_WIDTH-1:0] window_input [0:C_KERNEL_DIMENSION-1][0:C_KERNEL_DIMENSION-1];
     //Equivalent to the custom "kernel" type in user_pkg.vhd
-    logic signed [C_SIGNAL_WIDTH-1:0] filter [0:C_KERNEL_DIMENSION-1][0:C_KERNEL_DIMENSION-1];
+    logic signed [C_KERNEL_WIDTH-1:0] filter [0:C_KERNEL_DIMENSION-1][0:C_KERNEL_DIMENSION-1];
 
     logic [C_SIGNAL_WIDTH-1:0] dut_out;
     //Declare the DUT, signals will be driven in initial block
@@ -73,15 +74,15 @@ module convolution_pipeline_tb;
         for (i = 0; i < C_KERNEL_DIMENSION; i++) begin
             for (j = 0; j < C_KERNEL_DIMENSION; j++) begin
                 if(i == j)
-                filter[i][j] = -1;
+                filter[i][j] <= -1;
                 else
-                filter[i][j] = 0;
+                filter[i][j] <= 0;
             end
         end
 
         @(posedge clk) //one clock delay to load in new data
-        //Case 3: test data convolved with negative kernel
-        //Make window a 3x3 matrix of 10s
+        //Case 3: test data is maximum convolved with identity matrix
+        //Make window a 3x3 matrix of 4095
         for (i = 0; i < C_KERNEL_DIMENSION; i++) begin
             for (j = 0; j < C_KERNEL_DIMENSION; j++) begin
                 window_input[i][j] <= 12'd4095;
@@ -91,13 +92,18 @@ module convolution_pipeline_tb;
         for (i = 0; i < C_KERNEL_DIMENSION; i++) begin
             for (j = 0; j < C_KERNEL_DIMENSION; j++) begin
                 if(i == j)
-                filter[i][j] = 1;
+                filter[i][j] <= 1;
                 else
-                filter[i][j] = 0;
+                filter[i][j] <= 0;
             end
         end
 
-        repeat(5) @(posedge clk);
+    end
+
+    initial begin 
+        @(negedge rst);
+        repeat(8) @(posedge clk); //wait 8 clocks because 1 clock cycle after reset plus 7 for pipeline
+
         if(dut_out != 12'd12)
             $error("Test case 1 FAILED: Expected 12, got %0d", dut_out);
         else
@@ -114,8 +120,6 @@ module convolution_pipeline_tb;
             $error("Test Case 3 FAILED: Expected 4095 (clamped), got %0d", dut_out);
         else
             $display("Test Case 3 PASSED: dut_out = %0d", dut_out);
-
-
     end
     
     

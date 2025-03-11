@@ -16,17 +16,17 @@ entity mult_add_tree is
         en                  : in std_logic;
         pixel_input         : in window_row;
         filter_input        : in kernel_row;
-        output              : out signed(C_SIGNAL_WIDTH*2+1 downto 0)
+        output              : out signed(C_ROW_MULT_WIDTH-1 downto 0)
     );
 end mult_add_tree; 
 
 architecture rtl of mult_add_tree is
     signal pixel_window_r : window_row;
     signal filter_window_r : kernel_row;
-    signal col0_product, col1_product, col2_product: signed(C_SIGNAL_WIDTH*2 downto 0);
-    signal col_0_1_sum : signed(C_SIGNAL_WIDTH*2+1 downto 0);
-    signal delay_col2 : signed(C_SIGNAL_WIDTH*2 downto 0);
-    signal output_r : signed(C_SIGNAL_WIDTH*2+2 downto 0);
+    signal col0_product, col1_product, col2_product: signed(C_SIGNAL_WIDTH+C_KERNEL_WIDTH downto 0);
+    signal col_0_1_sum : signed(C_SIGNAL_WIDTH+C_KERNEL_WIDTH+1 downto 0);
+    signal delay_col2 : signed(C_SIGNAL_WIDTH+C_KERNEL_WIDTH downto 0);
+    signal output_r : signed(ROW_MULT_RANGE);
 begin
     output <= output_r;
     process(clk, rst) 
@@ -47,12 +47,12 @@ begin
                 filter_window_r <= filter_input;
 
                 --Multiply each pixel value in row by the corresponding filter row value. Casting to signed in case of negative values (i.e. sobel filter)
-                col0_product <= signed(pixel_window_r(0)) * filter_window_r(0);
-                col1_product <= signed(pixel_window_r(1)) * filter_window_r(1);
-                col2_product <= signed(pixel_window_r(2)) * filter_window_r(2);
+                col0_product <= signed('0' & pixel_window_r(0)) * filter_window_r(0);
+                col1_product <= signed('0' & pixel_window_r(1)) * filter_window_r(1);
+                col2_product <= signed('0' & pixel_window_r(2)) * filter_window_r(2);
 
                 --Add column 0 and column 1 product, delay column 2 product for later add
-                col_0_1_sum <= resize(col0_product, C_SIGNAL_WIDTH*2+1) + resize(col1_product, C_SIGNAL_WIDTH*2+1);
+                col_0_1_sum <= resize(col0_product, C_SIGNAL_WIDTH+C_KERNEL_WIDTH+2) + resize(col1_product, C_SIGNAL_WIDTH+C_KERNEL_WIDTH+2);
                 delay_col2 <= col2_product;
 
                 --Accumulate the row sum in one final stage

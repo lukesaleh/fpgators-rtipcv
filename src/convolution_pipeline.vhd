@@ -4,7 +4,7 @@ use ieee.numeric_std.all;
 use ieee.math_real.all;
 use work.user_pkg.all;
 
--- Entity: mult_tree
+-- Entity: convolution_pipeline
 -- Description: a pipelined convolution kernel. This entity takes a 3x3 slice of an image and convolves it with a filter kernel.
 -- It accumulates  
 
@@ -32,7 +32,7 @@ architecture rtl of convolution_pipeline is
     signal col_0_1_sum : signed(C_ROW_MULT_WIDTH downto 0);
     signal col_2_delay : signed(ROW_MULT_RANGE);
 begin
-    --Use the mult_add_tree entity to ccompute the row-wise sum of products for the filtered image
+    --Use the mult_add_tree entity to compute the row-wise sum of products for the filtered image
     U_ROW_ACCUMULATOR : for i in 0 to C_KERNEL_DIMENSION-1 generate
         U_MULT_ADD_TREE : entity work.mult_add_tree
         port map(
