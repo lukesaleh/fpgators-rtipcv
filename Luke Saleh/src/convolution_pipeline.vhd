@@ -2,7 +2,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
-use work.user_pkg.all;
+use work.conv_pkg.all;
 
 -- Entity: convolution_pipeline
 -- Description: a pipelined convolution kernel. This entity takes a 3x3 slice of an image and convolves it with a filter kernel.

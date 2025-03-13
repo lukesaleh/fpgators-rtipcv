@@ -2,7 +2,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
-use work.user_pkg.all;
+use work.conv_pkg.all;
 
 -- Entity: mult_tree
 -- Description: a pipelined multiplier and add tree. This entity works on one row of the 3x3 image window. 
