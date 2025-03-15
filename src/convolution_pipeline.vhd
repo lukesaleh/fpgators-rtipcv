@@ -6,7 +6,8 @@ use work.user_pkg.all;
 
 -- Entity: convolution_pipeline
 -- Description: a pipelined convolution kernel. This entity takes a 3x3 slice of an image and convolves it with a filter kernel.
--- It accumulates  
+-- A mult_add_tree entity is declared for each row in the window, and its results are summed
+-- It accumulates the final pixel output into one logic vector. 
 
 --Keeping convolution to a 3x3 kernel window for now to avoid additional complexity. Could look into modularity of kernel size in the future
 --Reference Dr. Stitt's mult_add_tree and mult_tree from RC1 convolution project for a more modular example (more complex as well due to recursive code)
