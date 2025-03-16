@@ -1,6 +1,6 @@
 `timescale 1 ns / 1 ps
 
-module convolution_pipeline_tb2 #(
+module convolution_pipeline_assert_tb #(
     parameter int C_SIGNAL_WIDTH     = 12,
     parameter int C_KERNEL_DIMENSION = 3,
     parameter int C_KERNEL_WIDTH     = 13
