@@ -4,7 +4,7 @@ module convolution_pipeline_tb;
     localparam int C_KERNEL_DIMENSION = 3;       // 3x3 kernel
     localparam int C_KERNEL_WIDTH = 13;
 
-    logic clk;
+    logic clk = 1'b0;
     logic rst;
     logic en;
 
@@ -26,23 +26,22 @@ module convolution_pipeline_tb;
 
     //Clock generation block
     initial begin
-        clk = 0;
-        forever #5 clk = ~clk;
+        forever #5 clk <= ~clk;
     end
 
     //Reset block, initializes everything to 0s
     initial begin
-        rst = 1;
-        en = 0;
+        rst <= 1;
+        en <= 0;
         #20;
-        rst = 0;
+        rst <= 0;
     end
 
     //Actual test stimulus to DUT
     initial begin
         integer i,j;
         @(negedge rst); //Wait until reset is complete
-        #10;
+        @(negedge clk);
 
         //Initialize test window data
         for (i = 0; i < C_KERNEL_DIMENSION; i++) begin
@@ -102,9 +101,9 @@ module convolution_pipeline_tb;
 
     initial begin 
         @(negedge rst);
-        repeat(8) @(posedge clk); //wait 8 clocks because 2 clock cycles (negedge makes it last extra cycle) after reset 
+        repeat(8) @(posedge clk); //wait 8 clocks because 2 clock cycles (negedge makes it last extra cycle) after negedge reset, enable
                                   //plus 6 for pipeline
-
+        
         if(dut_out != 12'd12)
             $error("Test case 1 FAILED: Expected 12, got %0d", dut_out);
         else
